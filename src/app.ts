@@ -9,7 +9,7 @@ import 'express-async-errors';
 // import morgan from 'morgan';
 import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@/middlewares/error.middleware';
-import { CREDENTIALS, ORIGIN } from './config/index';
+import { CREDENTIALS } from './config/index';
 require('dotenv').config();
 
 class App {
