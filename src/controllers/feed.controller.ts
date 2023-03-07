@@ -20,7 +20,7 @@ class FeedController {
 
     const pagesCount = await this.prisma.post.count();
 
-    const totalPages = Math.floor(pagesCount / +HITS_PER_PAGE);
+    const totalPages = Math.ceil(pagesCount / +HITS_PER_PAGE);
     const isNextPage = +pageNumber < totalPages;
 
     const data = posts.map((p) => {
