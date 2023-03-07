@@ -9,7 +9,7 @@ import 'express-async-errors';
 // import morgan from 'morgan';
 import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@/middlewares/error.middleware';
-import { CREDENTIALS } from './config/index';
+import { CREDENTIALS, ORIGIN } from './config/index';
 require('dotenv').config();
 
 class App {
@@ -41,7 +41,7 @@ class App {
     // this.app.use(morgan(LOG_FORMAT, { stream }));
     this.app.use(
       cors({
-        origin: `http://127.0.0.1:5173`,
+        origin: process.env.ORIGIN,
         credentials: CREDENTIALS,
         allowedHeaders:
           'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe, Access-Control-Allow-Headers, Access-Control-Allow-Origin, Authorization, Access-Control-Allow-Credentials, Access-Control-Allow-Methods',
