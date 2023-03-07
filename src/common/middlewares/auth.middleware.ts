@@ -3,7 +3,6 @@ import { TokenPayload } from '../../interfaces/auth.interface';
 import { NextFunction, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
-import { SECRET_KEY } from '@config';
 import { HttpException } from '@/common/exceptions/HttpException';
 import { RequestWithUser } from '@interfaces/auth.interface';
 import { UNAUTHORIZED } from '@/common/exceptions/HttpStatusCodes';
@@ -21,11 +20,12 @@ export const authMiddleware = async (
         : null);
 
     if (Authorization) {
-      const secretKey: string = SECRET_KEY;
+      const secretKey: string = process.env.SECRET_KEY;
       const verificationResponse = verify(
         Authorization,
         secretKey
       ) as TokenPayload;
+
       const userId = verificationResponse.userId;
 
       const users = new PrismaClient().user;
@@ -43,6 +43,8 @@ export const authMiddleware = async (
       next(new HttpException(UNAUTHORIZED, 'Unauthorized'));
     }
   } catch (error) {
+    console.log('error', error);
+
     next(new HttpException(UNAUTHORIZED, 'Wrong authentication token'));
   }
 };
@@ -60,7 +62,8 @@ export const attachUserToRequest = async (
         : null);
 
     if (Authorization) {
-      const secretKey: string = SECRET_KEY;
+      const secretKey: string = process.env.SECRET_KEY;
+
       const verificationResponse = verify(
         Authorization,
         secretKey

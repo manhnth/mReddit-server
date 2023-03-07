@@ -10,13 +10,8 @@ import { hash, compare } from 'bcrypt';
 import { isEmpty } from '@utils/util';
 import { PrismaClient, User } from '@prisma/client';
 import { sign, verify } from 'jsonwebtoken';
-import {
-  EXPIRES_IN,
-  REFRESH_EXPIRES_IN,
-  REFRESH_KEY,
-  SECRET_KEY,
-} from '@/config/index';
 import { CreateUserDto } from '@/dtos/auth.dto';
+import { EXPIRES_IN, REFRESH_EXPIRES_IN } from '@/config/index';
 
 class AuthService {
   public user = new PrismaClient().user;
@@ -87,7 +82,10 @@ class AuthService {
   public async refreshToken(
     refreshToken: string
   ): Promise<{ user: User; tokens: Tokens }> {
-    const tokenPayLoad = verify(refreshToken, REFRESH_KEY) as TokenPayload;
+    const tokenPayLoad = verify(
+      refreshToken,
+      process.env.REFRESH_KEY
+    ) as TokenPayload;
 
     if (!tokenPayLoad.userId) {
       throw new HttpException(BAD_REQUEST, 'Refresh token is invalid!');
@@ -109,12 +107,20 @@ class AuthService {
 
   private generateTokens(user: User): Tokens {
     const { id: userId, username, email } = user;
-    const access_token = sign({ userId, username, email }, SECRET_KEY, {
-      expiresIn: EXPIRES_IN,
-    });
-    const refresh_token = sign({ userId, username, email }, REFRESH_KEY, {
-      expiresIn: REFRESH_EXPIRES_IN,
-    });
+    const access_token = sign(
+      { userId, username, email },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: EXPIRES_IN,
+      }
+    );
+    const refresh_token = sign(
+      { userId, username, email },
+      process.env.REFRESH_KEY,
+      {
+        expiresIn: REFRESH_EXPIRES_IN,
+      }
+    );
 
     return {
       refresh_token,

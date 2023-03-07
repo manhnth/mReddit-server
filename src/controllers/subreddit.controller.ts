@@ -62,8 +62,8 @@ class SubredditController {
     const response = {
       name: subreddit.name,
       about: subreddit.about,
-      nbMembers: subreddit._count.Memberships,
-      nbPosts: subreddit._count.Post,
+      nbMembers: subreddit._count.memberships,
+      nbPosts: subreddit._count.post,
     };
 
     res.status(OK).json({ subreddit: response });
