@@ -1,8 +1,8 @@
-import { NOT_FOUND } from './../common/exceptions/HttpStatusCodes';
-import { HttpException } from '@/common/exceptions/HttpException';
+import { NOT_FOUND } from '../exceptions/HttpStatusCodes';
+import { HttpException } from '@/exceptions/HttpException';
 import { SearchParams } from '../interfaces/posts.interface';
 import { Request, Response } from 'express';
-import { CREATE, OK } from '@/common/exceptions/HttpStatusCodes';
+import { CREATE, OK } from '@/exceptions/HttpStatusCodes';
 import PostService from '@/services/posts.service';
 import { CreatePostDto, UpdatePostDto } from '@/dtos/posts.dto';
 import { RequestWithUser } from '@/interfaces/auth.interface';

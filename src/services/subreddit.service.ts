@@ -1,5 +1,5 @@
-import { CONFLICT } from './../common/exceptions/HttpStatusCodes';
-import { HttpException } from './../common/exceptions/HttpException';
+import { CONFLICT } from '../exceptions/HttpStatusCodes';
+import { HttpException } from '../exceptions/HttpException';
 import { CreateSubredditDto } from './../dtos/subreddit.dto';
 import { HITS_PER_PAGE } from '@/config/index';
 import { Memberships, PrismaClient, Subreddit } from '@prisma/client';

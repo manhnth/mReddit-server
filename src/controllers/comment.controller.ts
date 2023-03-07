@@ -1,7 +1,7 @@
 import { RequestWithUser } from './../interfaces/auth.interface';
 import AuthService from '@/services/auth.service';
 import { Request, Response } from 'express';
-import { CREATE, OK } from '@/common/exceptions/HttpStatusCodes';
+import { CREATE, OK } from '@/exceptions/HttpStatusCodes';
 import { CreateUserDto } from '@/dtos/auth.dto';
 import commentService from '@/services/comment.service';
 

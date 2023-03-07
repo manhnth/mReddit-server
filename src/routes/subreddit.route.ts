@@ -1,5 +1,5 @@
 import { Routes } from '@/interfaces/routes.interface';
-import { authMiddleware } from '@/common/middlewares/auth.middleware';
+import { authMiddleware } from '@/middlewares/auth.middleware';
 import { Router } from 'express';
 import SubredditController from '@/controllers/subreddit.controller';
 

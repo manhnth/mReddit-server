@@ -1,11 +1,11 @@
 import { BAD_REQUEST } from '../exceptions/HttpStatusCodes';
-import { TokenPayload } from '../../interfaces/auth.interface';
+import { TokenPayload } from '../interfaces/auth.interface';
 import { NextFunction, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
-import { HttpException } from '@/common/exceptions/HttpException';
+import { HttpException } from '@/exceptions/HttpException';
 import { RequestWithUser } from '@interfaces/auth.interface';
-import { UNAUTHORIZED } from '@/common/exceptions/HttpStatusCodes';
+import { UNAUTHORIZED } from '@/exceptions/HttpStatusCodes';
 
 export const authMiddleware = async (
   req: RequestWithUser,

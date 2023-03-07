@@ -8,7 +8,7 @@ import 'express-async-errors';
 // import hpp from 'hpp';
 // import morgan from 'morgan';
 import { Routes } from '@interfaces/routes.interface';
-import errorMiddleware from '@/common/middlewares/error.middleware';
+import errorMiddleware from '@/middlewares/error.middleware';
 import { CREDENTIALS } from './config/index';
 require('dotenv').config();
 

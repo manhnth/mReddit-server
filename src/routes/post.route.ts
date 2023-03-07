@@ -1,7 +1,7 @@
-import { attachUserToRequest } from './../common/middlewares/auth.middleware';
+import { attachUserToRequest } from '../middlewares/auth.middleware';
 import PostsController from '@/controllers/posts.controller';
 import { Routes } from '@/interfaces/routes.interface';
-import { authMiddleware } from '@/common/middlewares/auth.middleware';
+import { authMiddleware } from '@/middlewares/auth.middleware';
 import { Router } from 'express';
 
 class PostRoute implements Routes {

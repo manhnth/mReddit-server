@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { RequestWithUser } from './../interfaces/auth.interface';
 import { Request, Response } from 'express';
-import { OK } from '@/common/exceptions/HttpStatusCodes';
+import { OK } from '@/exceptions/HttpStatusCodes';
 import FeedService from '@/services/feed.service';
 import { HITS_PER_PAGE } from '@/config/index';
 

@@ -1,9 +1,9 @@
-import { UNAUTHORIZED } from '@/common/exceptions/HttpStatusCodes';
+import { UNAUTHORIZED } from '@/exceptions/HttpStatusCodes';
 import { HITS_PER_PAGE } from '@/config/index';
 import { SearchParams } from '../interfaces/posts.interface';
 import { CreatePostDto, UpdatePostDto } from '@/dtos/posts.dto';
 import { Post, PrismaClient } from '@prisma/client';
-import { HttpException } from '@/common/exceptions/HttpException';
+import { HttpException } from '@/exceptions/HttpException';
 
 class PostService {
   public user = new PrismaClient().user;

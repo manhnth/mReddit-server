@@ -1,11 +1,7 @@
 import { UserResponse } from '../interfaces/auth.interface';
 import { TokenPayload, Tokens } from '@interfaces/auth.interface';
-import {
-  BAD_REQUEST,
-  CONFLICT,
-  NOT_FOUND,
-} from '@/common/exceptions/HttpStatusCodes';
-import { HttpException } from '@/common/exceptions/HttpException';
+import { BAD_REQUEST, CONFLICT, NOT_FOUND } from '@/exceptions/HttpStatusCodes';
+import { HttpException } from '@/exceptions/HttpException';
 import { hash, compare } from 'bcrypt';
 import { isEmpty } from '@utils/util';
 import { PrismaClient, User } from '@prisma/client';

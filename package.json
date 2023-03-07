@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "build": "tsc && tsc-alias",
+    "build": "tsc && tsc-alias && prisma generate",
     "watch": "tsc-alias -w",
     "dev": "nodemon",
     "start2": "node dist/server.js",
