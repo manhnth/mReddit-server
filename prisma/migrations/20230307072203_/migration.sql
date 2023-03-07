@@ -18,7 +18,7 @@ CREATE TABLE "Post" (
     "title" TEXT NOT NULL,
     "text" TEXT NOT NULL,
     "point" INTEGER NOT NULL DEFAULT 0,
-    "voteStatus" INTEGER NOT NULL,
+    "voteStatus" INTEGER NOT NULL DEFAULT 0,
     "createAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updateAt" TIMESTAMP(3) NOT NULL,
     "subredditId" INTEGER,
