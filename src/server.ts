@@ -1,5 +1,5 @@
 import App from './app';
-// import AuthRoute from '@routes/auth.route';
+import IndexRoute from './routes/index.route';
 import AuthRoute from '@/routes/auth.route';
 import PostRoute from './routes/post.route';
 import SubredditRoute from './routes/subreddit.route';
@@ -10,6 +10,7 @@ import CommentRoute from './routes/comment.router';
 // validateEnv();
 
 const app = new App([
+  new IndexRoute(),
   new AuthRoute(),
   new PostRoute(),
   new SubredditRoute(),
