@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client';
 import { NOT_FOUND } from '../exceptions/HttpStatusCodes';
 import { HttpException } from '../exceptions/HttpException';
 import { Request, Response } from 'express';
@@ -9,7 +8,6 @@ import SubredditService from '@/services/subreddit.service';
 
 class SubredditController {
   public subredditService = new SubredditService();
-  public prisma = new PrismaClient();
 
   public create = async (req: RequestWithUser, res: Response) => {
     const createSubredditDto: CreateSubredditDto = req.body;

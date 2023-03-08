@@ -1,15 +1,11 @@
 import { HITS_PER_PAGE } from '@/config/index';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/utils/prisma';
 
 class FeedService {
-  public subreddit = new PrismaClient().subreddit;
-  public post = new PrismaClient().post;
-  public memberships = new PrismaClient().memberships;
-
   public async getGlobalFeed(pageNumber: number, sortBy: string) {
     const page = pageNumber || 1;
 
-    return await this.post.findMany({
+    return await prisma.post.findMany({
       include: {
         subreddit: true,
         author: true,
@@ -27,7 +23,7 @@ class FeedService {
   public async getUserFeed(userId: number, pageNumber: number, sortBy: string) {
     const page = pageNumber | 1;
 
-    return await this.post.findMany({
+    return await prisma.post.findMany({
       where: {
         subreddit: {
           memberships: {

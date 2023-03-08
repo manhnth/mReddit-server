@@ -4,16 +4,15 @@ import { BAD_REQUEST, CONFLICT, NOT_FOUND } from '@/exceptions/HttpStatusCodes';
 import { HttpException } from '@/exceptions/HttpException';
 import { hash, compare } from 'bcrypt';
 import { isEmpty } from '@utils/util';
-import { PrismaClient, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { sign, verify } from 'jsonwebtoken';
 import { CreateUserDto } from '@/dtos/auth.dto';
 import { EXPIRES_IN, REFRESH_EXPIRES_IN } from '@/config/index';
+import { prisma } from '@/utils/prisma';
 
 class AuthService {
-  public user = new PrismaClient().user;
-
   public async me(id: number): Promise<UserResponse> {
-    const currentUser = this.user.findUnique({
+    const currentUser = prisma.user.findUnique({
       where: {
         id: id,
       },
@@ -42,7 +41,7 @@ class AuthService {
       throw new HttpException(CONFLICT, `This email/username already exists`);
 
     const hashedPassword = await hash(createUserDto.password, 10);
-    const createdUser = await this.user.create({
+    const createdUser = await prisma.user.create({
       data: { ...createUserDto, password: hashedPassword },
     });
 
@@ -88,7 +87,7 @@ class AuthService {
     }
 
     // check if user info in refresh token is valid
-    const user = await this.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: tokenPayLoad.userId,
       },
@@ -125,7 +124,7 @@ class AuthService {
   }
 
   private async findUser({ username, email }): Promise<User | null> {
-    const user = await this.user.findFirst({
+    const user = await prisma.user.findFirst({
       where: { OR: [{ username }, { email }] },
     });
     return user || null;

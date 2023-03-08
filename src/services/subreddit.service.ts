@@ -2,19 +2,16 @@ import { CONFLICT } from '../exceptions/HttpStatusCodes';
 import { HttpException } from '../exceptions/HttpException';
 import { CreateSubredditDto } from './../dtos/subreddit.dto';
 import { HITS_PER_PAGE } from '@/config/index';
-import { Memberships, PrismaClient, Subreddit } from '@prisma/client';
+import { Memberships, Subreddit } from '@prisma/client';
+import { prisma } from '@/utils/prisma';
 
 class SubredditService {
-  public subreddit = new PrismaClient().subreddit;
-  public post = new PrismaClient().post;
-  public memberships = new PrismaClient().memberships;
-
   public async create(
     createSubredditDto: CreateSubredditDto,
     userId: number
   ): Promise<{ subreddit: Subreddit; memberships: Memberships }> {
     //check if subreddit name is taken
-    const foundSubreddit = await this.subreddit.findUnique({
+    const foundSubreddit = await prisma.subreddit.findUnique({
       where: {
         name: createSubredditDto.name,
       },
@@ -27,13 +24,13 @@ class SubredditService {
       );
     }
 
-    const subreddit = await this.subreddit.create({
+    const subreddit = await prisma.subreddit.create({
       data: {
         ...createSubredditDto,
       },
     });
 
-    const memberships = await this.memberships.create({
+    const memberships = await prisma.memberships.create({
       data: {
         memberId: userId,
         role: 'OWNER',
@@ -47,7 +44,7 @@ class SubredditService {
   public async getSubredditUser(
     userId: number
   ): Promise<{ subreddit: Subreddit }[]> {
-    const subreddis = this.memberships.findMany({
+    const subreddis = prisma.memberships.findMany({
       where: {
         memberId: userId,
       },
@@ -60,7 +57,7 @@ class SubredditService {
   }
 
   public async getSubredditByName(name: string) {
-    const subreddit = await this.subreddit.findUnique({
+    const subreddit = await prisma.subreddit.findUnique({
       where: { name: name },
       select: {
         name: true,
@@ -79,7 +76,7 @@ class SubredditService {
     const isSortByPoint = sort_by === 'point';
 
     const posts = isSortByPoint
-      ? await this.post.findMany({
+      ? await prisma.post.findMany({
           where: {
             subreddit: {
               name: name,
@@ -98,7 +95,7 @@ class SubredditService {
             point: 'desc',
           },
         })
-      : await this.post.findMany({
+      : await prisma.post.findMany({
           where: {
             subreddit: {
               name: name,

@@ -2,10 +2,10 @@ import { BAD_REQUEST } from '../exceptions/HttpStatusCodes';
 import { TokenPayload } from '../interfaces/auth.interface';
 import { NextFunction, Response } from 'express';
 import { verify } from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client';
 import { HttpException } from '@/exceptions/HttpException';
 import { RequestWithUser } from '@interfaces/auth.interface';
 import { UNAUTHORIZED } from '@/exceptions/HttpStatusCodes';
+import { prisma } from '@/utils/prisma';
 
 export const authMiddleware = async (
   req: RequestWithUser,
@@ -27,7 +27,7 @@ export const authMiddleware = async (
 
     const userId = verificationResponse.userId;
 
-    const users = new PrismaClient().user;
+    const users = prisma.user;
     const findUser = await users.findUnique({
       where: { id: Number(userId) },
     });

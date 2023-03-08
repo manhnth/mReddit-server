@@ -1,13 +1,12 @@
-import { PrismaClient } from '@prisma/client';
 import { RequestWithUser } from './../interfaces/auth.interface';
 import { Request, Response } from 'express';
 import { OK } from '@/exceptions/HttpStatusCodes';
 import FeedService from '@/services/feed.service';
 import { HITS_PER_PAGE } from '@/config/index';
+import { prisma } from '@/utils/prisma';
 
 class FeedController {
   public feedService = new FeedService();
-  public prisma = new PrismaClient();
 
   public getGlobalFeed = async (req: RequestWithUser, res: Response) => {
     const { page, sort_by } = req.query;
@@ -18,7 +17,7 @@ class FeedController {
 
     const posts = await this.feedService.getGlobalFeed(+pageNumber, sortBy);
 
-    const pagesCount = await this.prisma.post.count();
+    const pagesCount = await prisma.post.count();
 
     const totalPages = Math.ceil(pagesCount / +HITS_PER_PAGE);
     const isNextPage = +pageNumber < totalPages;

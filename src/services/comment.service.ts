@@ -1,18 +1,13 @@
-import { HITS_PER_PAGE } from '@/config/index';
-import { SearchParams } from '../interfaces/posts.interface';
-import { FetchPostsResponse } from '@interfaces/posts.interface';
-import { FetchPostsParams, UpdatePostDto } from '@/dtos/posts.dto';
-import { Comment, Post, PrismaClient } from '@prisma/client';
+import { Comment } from '@prisma/client';
+import { prisma } from '@/utils/prisma';
 
 class CommentService {
-  public prisma = new PrismaClient();
-
   public async create(
     userId: number,
     postId: number,
     text: string
   ): Promise<Comment> {
-    const comment = await this.prisma.comment.create({
+    const comment = await prisma.comment.create({
       data: {
         ownerId: userId,
         postId: postId,
@@ -24,7 +19,7 @@ class CommentService {
   }
 
   public async delete(cmtId: number) {
-    await this.prisma.comment.delete({
+    await prisma.comment.delete({
       where: {
         id: cmtId,
       },
