@@ -39,20 +39,34 @@ class App {
 
   private initializeMiddlewares() {
     // this.app.use(morgan(LOG_FORMAT, { stream }));
-    this.app.use(
-      cors({
-        origin: process.env.ORIGIN,
-        credentials: CREDENTIALS,
-        allowedHeaders:
-          'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe, Access-Control-Allow-Headers, Access-Control-Allow-Origin, Authorization, Access-Control-Allow-Credentials, Access-Control-Allow-Methods',
-      })
-    );
+    // this.app.use(
+    //   cors({
+    //     origin: process.env.ORIGIN,
+    //     credentials: CREDENTIALS,
+    //     // allowedHeaders:
+    //     //   'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe, Access-Control-Allow-Headers, Access-Control-Allow-Origin, Authorization, Access-Control-Allow-Credentials, Access-Control-Allow-Methods',
+    //   })
+    // );
     // this.app.use(hpp());
     // this.app.use(helmet());
     // this.app.use(compression());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
+    this.app.all('*', (req, res, next) => {
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+      res.setHeader('Access-Control-Allow-Origin', req.get('Origin'));
+      res.setHeader(
+        'Access-Control-Allow-Methods',
+        'POST, GET, OPTIONS, DELETE, PUT, PATCH'
+      );
+      res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept, If-Modified-Since, Authorization'
+      );
+
+      next();
+    });
   }
 
   private initializeRoutes(routes: Routes[]) {

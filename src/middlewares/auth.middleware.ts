@@ -12,40 +12,34 @@ export const authMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    const Authorization =
-      req.cookies['Authorization'] ||
-      (req.header('Authorization')
-        ? req.header('Authorization').split('Bearer ')[1]
-        : null);
+  const Authorization =
+    req.cookies['Authorization'] ||
+    (req.header('Authorization')
+      ? req.header('Authorization').split('Bearer ')[1]
+      : null);
 
-    if (Authorization) {
-      const secretKey: string = process.env.SECRET_KEY;
-      const verificationResponse = verify(
-        Authorization,
-        secretKey
-      ) as TokenPayload;
+  if (Authorization) {
+    const secretKey: string = process.env.SECRET_KEY;
+    const verificationResponse = verify(
+      Authorization,
+      secretKey
+    ) as TokenPayload;
 
-      const userId = verificationResponse.userId;
+    const userId = verificationResponse.userId;
 
-      const users = new PrismaClient().user;
-      const findUser = await users.findUnique({
-        where: { id: Number(userId) },
-      });
+    const users = new PrismaClient().user;
+    const findUser = await users.findUnique({
+      where: { id: Number(userId) },
+    });
 
-      if (findUser) {
-        req.user = verificationResponse;
-        next();
-      } else {
-        next(new HttpException(UNAUTHORIZED, 'Wrong authentication token'));
-      }
+    if (findUser) {
+      req.user = verificationResponse;
+      next();
     } else {
-      next(new HttpException(UNAUTHORIZED, 'Unauthorized'));
+      next(new HttpException(UNAUTHORIZED, 'Wrong authentication token'));
     }
-  } catch (error) {
-    console.log('error', error);
-
-    next(new HttpException(UNAUTHORIZED, 'Wrong authentication token'));
+  } else {
+    next(new HttpException(401, 'No token on authorization headers'));
   }
 };
 
@@ -68,16 +62,8 @@ export const attachUserToRequest = async (
         Authorization,
         secretKey
       ) as TokenPayload;
-      const userId = verificationResponse.userId;
 
-      const users = new PrismaClient().user;
-      const findUser = await users.findUnique({
-        where: { id: Number(userId) },
-      });
-
-      if (findUser) {
-        req.user = verificationResponse;
-      }
+      if (verificationResponse) req.user = verificationResponse;
     }
     next();
   } catch (error) {
