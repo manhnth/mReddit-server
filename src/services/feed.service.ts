@@ -7,7 +7,7 @@ class FeedService {
   public memberships = new PrismaClient().memberships;
 
   public async getGlobalFeed(pageNumber: number, sortBy: string) {
-    const page = pageNumber | 1;
+    const page = pageNumber || 1;
 
     return await this.post.findMany({
       include: {
